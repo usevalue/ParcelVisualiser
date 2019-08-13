@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg8"
+   version="1.1">
+   	
+  <g
+     style="display:inline"
+     id="layer1">
+	<rect height="50px" width="11%"
+		x="0" y="0"
+		style="opacity: 1; stroke: none; fill: #fff5eb"/>
+	<rect height="50px" width="11%"
+		x="11%" y="0"
+		style="opacity: 1; stroke: none; fill: #fee6ce"/>
+	<rect height="50px" width="11%"
+		x="22%" y="0"
+		style="opacity: 1; stroke: none; fill: #fdd0a2"/>
+	<rect height="50px" width="11%"
+		x="33%" y="0"
+		style="opacity: 1; stroke: none; fill: #fdae6b"/>
+	<rect height="50px" width="11%"
+		x="44%" y="0"
+		style="opacity: 1; stroke: none; fill: #fd8d3c"/>
+	<rect height="50px" width="11%"
+		x="55%" y="0"
+		style="opacity: 1; stroke: none; fill: #f16913"/>
+	<rect height="50px" width="11%"
+		x="66%" y="0"
+		style="opacity: 1; stroke: none; fill: #d94801"/>
+	<rect height="50px" width="15%"
+		x="77%" y="0"
+		style="opacity: 1; stroke: none; fill: #8c2d04"/>
+	<rect height="50px" width="8%"
+		x="92%" y="0"
+		style="opacity: 1; stroke: none; fill: #000000"/>
+  </g>
+  
+  <g id="labels">
+    <text
+       id="text842"
+       xml:space="preserve">
+	   <tspan
+         style="stroke-width:0.26458332"
+         y="14pt"
+         x="1%"
+         id="tspan840">Up to $1,200</tspan>
+	</text>
+    <text
+       xml:space="preserve"
+       id="text846"><tspan
+         id="tspan844"
+         x="12%"
+         y="14pt"
+         style="stroke-width:0.26458332">Up to $10,000</tspan></text>
+    <text
+       id="text850"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.26458332"
+         y="14pt"
+         x="23%"
+         id="tspan848">...$68,000</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text854"><tspan
+		 id="tspan852"
+         x="34%"
+         y="14pt"
+         style="stroke-width:0.26458332; fill:#ffffff">...$460,000</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text878"><tspan
+         id="tspan876"
+         x="45%"
+         y="14pt"
+         style="stroke-width:0.26458332; fill:#ffffff">...$3.1 million</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text878"><tspan
+         id="tspan876"
+         x="56%"
+         y="14pt"
+         style="stroke-width:0.26458332; fill:#ffffff">...$21 million</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text878"><tspan
+         id="tspan876"
+         x="67%"
+         y="14pt"
+         style="stroke-width:0.26458332; fill:#ffffff">...$145 million</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text878"><tspan
+         id="tspan876"
+         x="78%"
+         y="14pt"
+         style="stroke-width:0.26458332; fill:#ffffff">Over $145 million</tspan></text>
+    <text
+       id="text882"
+       xml:space="preserve"><tspan
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.26458332"
+         y="14pt"
+         x="93%"
+         id="tspan880">No data</tspan></text>
+  </g>
+</svg>

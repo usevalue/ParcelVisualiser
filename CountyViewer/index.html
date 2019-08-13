@@ -1,0 +1,217 @@
+<html>
+
+<head>
+<title>BNRLT Mapping</title>
+
+<!--  BOILERPLATE: Importing libraries.  Stylesheets go first.  -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<!-- Import parcel data.  Note you must make sure to add "var parcels =" before the data, as in "var parcels = {geojson data}" -->
+<script src="data/erie_niagara.geojson"></script>
+<script src="data/greenspaces.geojson"></script>
+<script src="data/water1.geojson"></script>
+<script src="data/preservation_zones.geojson"></script>
+<script src="data/remediation_zones.geojson"></script>
+<script src="data/wetlands.geojson"></script>
+
+<script>
+function toggleDisplay(x) {
+	if(x.style.display == "none") {
+		x.style.display = "inline";
+	}
+	else x.style.display = "none";
+}
+</script>
+
+
+<style>
+	#the_map {
+		height: 100%;
+	}
+	
+	body {
+		margin: 0px;
+		padding: 0px
+	}
+	select {
+		width: 80%;
+	}
+	
+	#layout {
+		height: 100%;
+		width: 100%;
+		border-width: 0px;
+		border-style: solid;
+	}
+	
+	.leftbar {
+		width: 320px;
+		vertical-align: top;
+		padding: 0px 4px 0px 4px;
+		
+	}
+	
+	.key {
+		width: 100%;
+		height: 49px;
+		display: none;
+	}
+	
+	select {
+		width: 200px;
+	}
+</style>
+
+</head>
+
+<body>
+
+
+<!-- Container for the page --->
+<table id="layout" cellspacing="0" cellpadding="0">
+
+<!-- Display map keys at top of page -->
+<tr>
+
+<td class="leftbar">	
+	<h3><i>Display options</i></h3>
+	<!-- Overlay controls -->
+	<b><a href="#" onClick="toggleDisplay(document.getElementById('overlay_options'));">Highlighting options</a></b><br/>
+	<div id="overlay_options" style="display: none">
+	<input type="checkbox" id="hl_green" onClick="highlight_greenspaces=this.checked;" /> Highlight parks and trails<br/>
+	<input type="checkbox" id="hl_wetlands" onClick="highlight_wetlands=this.checked;" /> Highlight wetlands<br/>
+	<input type="checkbox" id="hl_waterways" onClick="highlight_waterways=this.checked;" /> Highlight waterways<br/>
+	<input type="checkbox" id="hl_preservation" onClick="highlight_preservation=this.checked;" /> Highlight preservation areas<br/>
+	<input type="checkbox" id="hl_remediation" onClick="highlight_remediation=this.checked;" /> Highlight remediation sites<br/>
+	<input type="checkbox" id="hl_delinquent" onClick="highlight_delinquent=this.checked;" /> Highlight tax delinquency<br/>
+	</div><br/>
+	<!-- Coloration -->
+	<select name="colour_by">
+	<option onClick="colour_by='default';">Default coloration.</option>
+	<option onClick="colour_by='water';">Distance to water</option>
+	<option onClick="colour_by='park';">Distance to a park</option>
+	<option onClick="colour_by='trail';">Distance to a trail</option>
+	<option onClick="colour_by='price';">Assessed value</option>
+	</select>
+	<!--  Boolean filters which decide whether a parcel will or will not display -->
+	<h3><i>Filter parcels</i></h3>
+	<select>
+	<option onClick="vacancy_filter='none';">Do not filter by vacancy</option>
+	<option onClick="vacancy_filter='require';">Show only vacant parcels</option>
+	<option onClick="vacancy_filter='exclude';">Hide vacant parcels</option>
+	</select><br/>
+	<select>
+	<option onClick="public_filter='none';">Do not filter by ownership</option>
+	<option onClick="public_filter='require';">Show only publicly-owned parcels</option>
+	<option onClick="public_filter='exclude';">Hide publicly-owned parcels</option>
+	</select><br/><br>
+
+	<b><a onClick="toggleDisplay(document.getElementById('price-filters'));" href="#">Filter by price range</a></b><br/>
+	<div id="price-filters" style="display: none">
+	<input id="price1" type="checkbox" checked /> $1 - $1,200<br/>
+	<input id="price2" type="checkbox" checked /> $1,201 - $10,000<br/>
+	<input id="price3" type="checkbox" checked /> $10,001 - $68,000<br/>
+	<input id="price4" type="checkbox" checked /> $68,001 - $460,000<br/>
+	<input id="price5" type="checkbox" checked /> $460,001 - $3.1 million<br/>
+	<input id="price6" type="checkbox" checked /> $3,100,001 - $21 million<br/>
+	<input id="price7" type="checkbox" checked /> $21,000,001 - $145 million<br/>
+	<input id="price8" type="checkbox" checked /> Over $145 million<br/>
+	<input id="price0" type="checkbox" checked /> No data<br/>
+	</div><br/>
+	<!-- Water distance slider. -->
+	<input type="text" id="waterdist" readonly style="border:0; color:#f6931f; font-weight:bold;"></input><br/><br/>
+	<center><div id="water-slider" style="width:85%"></div></center>
+	<script>
+	$( function() {
+		$( "#water-slider" ).slider({
+			range: true,
+			min: 0,
+			max: 150000,
+			step: 100,
+			values: [ 0, 150000 ],
+			slide: function( event, ui ) {
+				$( "#waterdist" ).val( ui.values[ 0 ] + "' - " + ui.values[ 1 ] + "' from water");
+			}
+		});
+		$( "#waterdist" ).val($( "#water-slider" ).slider( "values", 0 ) +
+		"' - " + $( "#water-slider" ).slider( "values", 1 ) + "' from water" );
+	} );
+	</script><br/>
+	
+	<!-- Park distance slider. -->
+	<input type="text" id="parkdist" readonly style="border:0; color:#f6931f; font-weight:bold;"></input><br/><br/>
+	<center><div id="park-slider" style="width:85%"></div></center>
+	<script>
+	$( function() {
+		$( "#park-slider" ).slider({
+			range: true,
+			min: 0,
+			max: 50000,
+			step: 100,
+			values: [ 0, 50000 ],
+			slide: function( event, ui ) {
+				$( "#parkdist" ).val( ui.values[ 0 ] + "' - " + ui.values[ 1 ] + "' from a park");
+			}
+		});
+		$( "#park" ).val($( "#park-slider" ).slider( "values", 0 ) +
+		"' - " + $( "#park-slider" ).slider( "values", 1 ) + "' from a park" );
+	} );
+	</script><br/>
+	
+	<!-- Trail distance slider. -->
+	<input type="text" id="traildist" readonly style="border:0; color:#f6931f; font-weight:bold;"></input><br/><br/>
+	<center><div id="trail-slider" style="width:85%"></div></center>
+	<script>
+	$( function() {
+		$( "#trail-slider" ).slider({
+			range: true,
+			min: 0,
+			max: 130000,
+			step: 100,
+			values: [ 0, 130000 ],
+			slide: function( event, ui ) {
+				$( "#traildist" ).val( ui.values[ 0 ] + "' - " + ui.values[ 1 ] + "' from a trail");
+			}
+		});
+		$( "#traildist" ).val($( "#trail-slider" ).slider( "values", 0 ) +
+		"' - " + $( "#trail-slider" ).slider( "values", 1 ) + "' from a trail" );
+	} );
+	</script><br/>
+	
+	<br/>
+	<center><input type="button" value="Update map" onClick="updateDisplay();"/></center>
+	<br/>
+	Displaying <span id="parcel-count">0</span> parcels out of <span id="parcel-total"></span>.
+</td>
+
+
+<td>
+	<table border="0" cellspacing="0" cellpadding="0" height="100%" width="100%">
+	<tr>
+	<td valign="top" height="50">
+	<img src="images/price_key.svg" class="key" id="price_key"/>
+	<img src="images/water_key.svg" class="key" id="water_key"/>
+	<img src="images/park_key.svg" class="key" id="park_key"/>
+	<img src="images/park_key.svg" class="key" id="trail_key"/>
+	</td>
+	</tr>
+
+	<tr>
+	<td>
+		<!-- The map -->
+		<div id="the_map" height="100%"></div>
+		<script src="js/draw_map.js"></script>
+	</td>
+	</tr>
+	</table>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

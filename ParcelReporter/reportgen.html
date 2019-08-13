@@ -1,0 +1,34 @@
+<html>
+
+<head>
+
+<!-- Boilerplate -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+<script src="buffalo_mouth.geojson"></script>
+<link rel="stylesheet" type="text/css" href="reports.css"></link>
+<style>
+
+
+</style>
+
+</head>
+
+<body>
+<table width="100%" height="100%" border="1" cellspacing="0">
+
+<tr>
+<td width="400" valign="top">
+<label class="switch"><input type="checkbox" id="report_toggle" onClick="showReport();">
+<span class="slider round"></span></label>
+&nbsp;<span id="report_type_display" style="font-size: 20px;"></span><br/><br/>
+<span id="report_text"></span>
+</td>
+<td><div id="map" style="height: 100%; width: 100%"></div></td>
+</tr>
+</table>
+
+<script src="generator.js"></script>
+</body>
+
+</html>
